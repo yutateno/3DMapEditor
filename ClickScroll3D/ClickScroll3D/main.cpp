@@ -1,5 +1,6 @@
-//#include "Project.hpp"
 #include "Input.hpp"
+#include "InputKey.hpp"
+#include "Camera.hpp"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -18,11 +19,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SetWindowSize(windowX, windowY);
 
 
+	int mac = MV1LoadModel("“§‰ß–³‘o\\“§‰ß–³‘o\\tkms_Blender.mv1");
+	int mac2 = MV1LoadModel("“§‰ß–³‘o\\“§‰ß–³‘o\\tkms_Blender.mv1");
+
+
+	Camera* camera = new Camera();
+
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0 && !MouseData::GetClick(2))
 	{
+		KeyData::UpDate();
 		MouseData::Mouse_UpDate();
 		MouseWheelData::MouseWheel_Update();
+
+		camera->Process();
+
+		MV1DrawModel(mac);
+		MV1SetPosition(mac, VGet(0.0f, 0.0f, 0.0f));
+		MV1DrawModel(mac2);
+		MV1SetPosition(mac2, VGet(100.0f, 0.0f, 100.0f));
+
+		// ConvWorldPosToScreenPos
 	}
+
+
+	MV1DeleteModel(mac2);
+	MV1DeleteModel(mac);
+
+
+	delete camera;
 
 
 	DxLib_End();

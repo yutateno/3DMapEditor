@@ -1,6 +1,7 @@
 #pragma once
 #include "DxLib.h"
 #include <math.h>
+#include "InputKey.hpp"
 
 
 class Camera
@@ -15,6 +16,9 @@ private:
 
 	float speed;					// 回転スピード
 	void RLrotate(const float speed, VECTOR& p_cameraArea);	// 回転を行う関数
+
+
+	int mouseX, mouseY, premouseX, premouseY;
 
 
 public:

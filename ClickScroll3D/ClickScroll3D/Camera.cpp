@@ -29,45 +29,24 @@ const VECTOR Camera::GetArea() const
 // メインプロセス
 void Camera::Process()
 {
+	GetMousePoint(&mouseX, &mouseY);
+
 	// 左に回転中
-	if (CheckHitKey(KEY_INPUT_LEFT) >= 1)
+	if (premouseX < mouseX)
 	{
 		RLrotate(speed, cameraArea);	// 回転処理
 	}
 	// 右に回転中
-	if (CheckHitKey(KEY_INPUT_RIGHT) >= 1)
+	if (premouseX > mouseX)
 	{
 		RLrotate(-speed, cameraArea);	// 回転処理
 	}
 
-	//// 上キーが押されていたら下から見上げる
-	//if (KeyData::Get(KEY_INPUT_UP) >= 1
-	//	|| InputPad::GetPadThumbData(controllNumber, STICK_RIGHT_Y) > 0)
-	//{
-	//	// 制限
-	//	if (TestPosition.y > 240)
-	//	{
-	//		TestPosition = VAdd(TestPosition, VScale(VNorm(TestPosition), -10));	// 単位ベクトル化してマイナスかけて同一方向に減らす
-	//	}
-	//}
 
-	//// 下キーが押されていたら上から見下ろす
-	//if (KeyData::Get(KEY_INPUT_DOWN) >= 1
-	//	|| ::InputPad::GetPadThumbData(controllNumber, STICK_RIGHT_Y) < 0)
-	//{
-	//	// 制限
-	//	if (TestPosition.y < 400)
-	//	{
-	//		TestPosition = VAdd(TestPosition, VScale(VNorm(TestPosition), 10));	// VScaleいらない
-	//	}
-	//}
+	premouseX = mouseX;
+	premouseY = mouseY;
 
-#ifdef _CAMERA_DEBG
-	printfDx("%d\n", HitNum);
-	//DrawCapsule3D(VAdd(cameraArea, charaArea), VAdd(viewArea, charaArea), 5.0f, 8, GetColor(0, 255, 0), GetColor(255, 255, 255), false);		// 面白い
-	DrawCapsule3D(VAdd(cameraArea, charaArea), charaArea, 5.0f, 8, GetColor(0, 255, 0), GetColor(255, 255, 255), false);		// 当たり判定を確認用の表示テスト
-#endif // !_CAMERA_DEBG
-
+	SetCameraPositionAndTarget_UpVecY(VAdd(cameraArea, VGet(0.0f, 0.0f, 0.0f)), VAdd(viewArea, VGet(0.0f, 0.0f, 0.0f)));
 }
 
 
