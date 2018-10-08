@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include <math.h>
 #include "InputKey.hpp"
+#include "Input.hpp"
 
 
 class Camera

@@ -32,15 +32,19 @@ void Camera::Process()
 	GetMousePoint(&mouseX, &mouseY);
 
 	// ¶‚É‰ñ“]’†
-	if (premouseX < mouseX)
+	if (MouseData::GetClick(1) >= 1)
 	{
-		RLrotate(speed, cameraArea);	// ‰ñ“]ˆ—
+		if (premouseX < mouseX)
+		{
+			RLrotate(speed * 2, cameraArea);	// ‰ñ“]ˆ—
+		}
+		// ‰E‚É‰ñ“]’†
+		if (premouseX > mouseX)
+		{
+			RLrotate(-speed * 2, cameraArea);	// ‰ñ“]ˆ—
+		}
 	}
-	// ‰E‚É‰ñ“]’†
-	if (premouseX > mouseX)
-	{
-		RLrotate(-speed, cameraArea);	// ‰ñ“]ˆ—
-	}
+	
 
 
 	premouseX = mouseX;
