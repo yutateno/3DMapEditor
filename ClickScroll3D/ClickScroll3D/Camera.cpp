@@ -4,9 +4,8 @@
 // コンストラクタ
 Camera::Camera()
 {
-	cameraArea = VGet(0, 350, 500);
-	viewArea = VGet(0, 150, 0);
-	pointArea = VGet(0.0f, 0.0f, 0.0f);
+	cameraArea = VGet(0, 350, 600);
+	viewArea = VGet(0, 150, 100);
 
 	speed = DX_PI_F / 90;
 	angle = 0.0f;
@@ -14,7 +13,7 @@ Camera::Camera()
 	SetCameraNearFar(100.0f, 10000.0f);	// カメラの描画範囲を指定
 
 	// 第一引数の視点から第二引数のターゲットを見る角度にカメラを設置
-	SetCameraPositionAndTarget_UpVecY(VAdd(cameraArea, pointArea), VAdd(viewArea, pointArea));
+	SetCameraPositionAndTarget_UpVecY(cameraArea, viewArea);
 }
 
 // デストラクタ
@@ -37,17 +36,15 @@ void Camera::Process(int mouseX, int mouseY)
 		// 左に回転中
 		if (premouseX < mouseX)
 		{
-			RLrotate(speed * 2, cameraArea);	// 回転処理
+			//RLrotate(speed * 2, cameraArea);	// 回転処理
 			RLrotate(speed * 2, viewArea);	// 回転処理
-			RLrotate(speed * 2, pointArea);	// 回転処理
 			angle += speed * 2;
 		}
 		// 右に回転中
 		if (premouseX > mouseX)
 		{
-			RLrotate(-speed * 2, cameraArea);	// 回転処理
+			//RLrotate(-speed * 2, cameraArea);	// 回転処理
 			RLrotate(-speed * 2, viewArea);	// 回転処理
-			RLrotate(-speed * 2, pointArea);	// 回転処理
 			angle -= speed * 2;
 		}
 
@@ -73,8 +70,6 @@ void Camera::Process(int mouseX, int mouseY)
 			cameraArea.z += cosf(angle) * -5.0f;
 			viewArea.x += sinf(angle) * -5.0f;
 			viewArea.z += cosf(angle) * -5.0f;
-			//pointArea.x += sinf(angle) * -5.0f;
-			////pointArea.z += cosf(angle) * -5.0f;
 		}
 
 		if (KeyData::Get(KEY_INPUT_S) >= 1)
@@ -83,8 +78,6 @@ void Camera::Process(int mouseX, int mouseY)
 			cameraArea.z += cosf(angle) * 5.0f;
 			viewArea.x += sinf(angle) * 5.0f;
 			viewArea.z += cosf(angle) * 5.0f;
-			//pointArea.x += sinf(angle) * 5.0f;
-			//pointArea.z += cosf(angle) * 5.0f;
 		}
 	}
 
@@ -95,8 +88,6 @@ void Camera::Process(int mouseX, int mouseY)
 		cameraArea.z += cosf(angle) * -5.0f;
 		viewArea.x += sinf(angle) * -5.0f;
 		viewArea.z += cosf(angle) * -5.0f;
-		//pointArea.x += sinf(angle) * -5.0f;
-		////pointArea.z += cosf(angle) * -5.0f;
 	}
 
 	if (MouseWheelData::GetMouseWheel(GetMouseWheelRotVol()) <= -1)
@@ -105,17 +96,15 @@ void Camera::Process(int mouseX, int mouseY)
 		cameraArea.z += cosf(angle) * 5.0f;
 		viewArea.x += sinf(angle) * 5.0f;
 		viewArea.z += cosf(angle) * 5.0f;
-		//pointArea.x += sinf(angle) * 5.0f;
-		//pointArea.z += cosf(angle) * 5.0f;
 	}
 	
 
 	premouseX = mouseX;
 	premouseY = mouseY;
 
-	DrawFormatString(0, 0, 255, "%f\t%f\t%f\n%f\t%f\t%f\n%f\t%f\t%f\n", cameraArea.x, cameraArea.y, cameraArea.z, viewArea.x, viewArea.y, viewArea.z, pointArea.x, pointArea.y, pointArea.z);
+	DrawFormatString(0, 0, 255, "%f\t%f\t%f\n%f\t%f\t%f\n", cameraArea.x, cameraArea.y, cameraArea.z, viewArea.x, viewArea.y, viewArea.z);
 
-	SetCameraPositionAndTarget_UpVecY(VAdd(cameraArea, pointArea), VAdd(viewArea, pointArea));
+	SetCameraPositionAndTarget_UpVecY(cameraArea, viewArea);
 }
 
 

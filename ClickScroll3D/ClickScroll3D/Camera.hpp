@@ -3,6 +3,7 @@
 #include <math.h>
 #include "InputKey.hpp"
 #include "Input.hpp"
+#include "Parameter.hpp"
 
 
 class Camera
@@ -10,7 +11,6 @@ class Camera
 private:
 	VECTOR cameraArea;		// カメラの位置
 	VECTOR viewArea;		// 注視する方向
-	VECTOR pointArea;
 
 
 	int stageHandle;		// 当たり判定用ステージ

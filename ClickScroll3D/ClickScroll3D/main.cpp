@@ -1,7 +1,6 @@
 #include "Input.hpp"
 #include "InputKey.hpp"
 #include "Camera.hpp"
-#include "Parameter.hpp"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
