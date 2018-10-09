@@ -160,6 +160,7 @@
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Input.hpp" />
     <ClInclude Include="InputKey.hpp" />
+    <ClInclude Include="Parameter.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
