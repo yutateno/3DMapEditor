@@ -27,6 +27,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 	int mouseX, mouseY;
+	int preMouseX, preMouseY;
 
 
 	VECTOR model1VecUp = VGet(0.0f, 160.0f, 0.0f);
@@ -43,6 +44,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	bool model1Flag = false;
 	bool model2Flag = false;
+
+	bool model1XMoveTouch = false;
+	bool model1ZMoveTouch = false;
+	bool model2XMoveTouch = false;
+	bool model2ZMoveTouch = false;
 
 
 	int i;
@@ -77,11 +83,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		SetUseZBufferFlag(FALSE);
 
 
-		Vector2 model1Up(ConvWorldPosToScreenPos(model1VecUp).x, ConvWorldPosToScreenPos(model1VecUp).y);
-		Vector2 model1Down(ConvWorldPosToScreenPos(model1VecDown).x, ConvWorldPosToScreenPos(model1VecDown).y);
+		Vector2 model1Up(ConvWorldPosToScreenPos(model1VecUp).x - 5.0f, ConvWorldPosToScreenPos(model1VecUp).y);
+		Vector2 model1Down(ConvWorldPosToScreenPos(model1VecDown).x + 5.0f, ConvWorldPosToScreenPos(model1VecDown).y);
 
-		Vector2 model2Up(ConvWorldPosToScreenPos(model2VecUp).x, ConvWorldPosToScreenPos(model2VecUp).y);
-		Vector2 model2Down(ConvWorldPosToScreenPos(model2VecDown).x, ConvWorldPosToScreenPos(model2VecDown).y);
+		Vector2 model2Up(ConvWorldPosToScreenPos(model2VecUp).x - 5.0f, ConvWorldPosToScreenPos(model2VecUp).y);
+		Vector2 model2Down(ConvWorldPosToScreenPos(model2VecDown).x + 5.0f, ConvWorldPosToScreenPos(model2VecDown).y);
 
 		KeyData::UpDate();
 		MouseData::Mouse_UpDate();
@@ -97,7 +103,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (model1Flag)
 		{
-			if (KeyData::Get(KEY_INPUT_W) >= 1)
+			/*if (KeyData::Get(KEY_INPUT_W) >= 1)
 			{
 				model1VecUp.z += 1.0f;
 				model1VecDown.z += 1.0f;
@@ -116,12 +122,91 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				model1VecUp.x += 1.0f;
 				model1VecDown.x += 1.0f;
+			}*/
+			// X軸方向に関して
+			for (int i = 0; i != 10; ++i)
+			{
+				DrawLine(ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y+i - (model1VecDown.y-i)) / 2.0f, model1VecUp.z)).x
+					, ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y+i - (model1VecDown.y-i)) / 2.0f, model1VecUp.z)).y
+					, ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y+i - (model1VecDown.y-i)) / 2.0f, model1VecUp.z)).x
+					, ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y+i - (model1VecDown.y-i)) / 2.0f, model1VecUp.z)).y
+					, GetColor(255, 0, 255));
 			}
+			if ((ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX
+				&& ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX)
+				|| (ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX
+					&& ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX))
+			{
+				printfDx("触れてる\n");
+				if (MouseData::GetClick(0) >= 1)
+				{
+					model1XMoveTouch = true;
+				}
+			}
+			if (model1XMoveTouch)
+			{
+				if (preMouseX > mouseX)
+				{
+					model1VecUp.x += 1.0f;
+					model1VecDown.x += 1.0f;
+				}
+				if (preMouseX < mouseX)
+				{
+					model1VecUp.x -= 1.0f;
+					model1VecDown.x -= 1.0f;
+				}
+			}
+
+			if (MouseData::GetClick(0) == 0)
+			{
+				model1XMoveTouch = false;
+			}
+
+			// Z軸方向に関して
+			for (int i = 0; i != 10; ++i)
+			{
+				DrawLine(ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x
+					, ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).y
+					, ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).x
+					, ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).y
+					, GetColor(0, 255, 255));	
+			}
+			if ((ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX
+				&& ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).x >= mouseX)
+				|| (ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX
+					&& ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).x <= mouseX))
+			{
+				printfDx("触れてる\n");
+				if (MouseData::GetClick(0) >= 1)
+				{
+					model1ZMoveTouch = true;
+				}
+			}
+			if (model1ZMoveTouch)
+			{
+				if (preMouseX > mouseX)
+				{
+					model1VecUp.z += preMouseX - mouseX;
+					model1VecDown.z += preMouseX - mouseX;
+				}
+				if (preMouseX < mouseX)
+				{
+					model1VecUp.z -= mouseX - preMouseX;
+					model1VecDown.z -= mouseX - preMouseX;
+				}
+			}
+			if (MouseData::GetClick(0) == 0)
+			{
+				model1ZMoveTouch = false;
+			}
+			
+
 			DrawCapsule3D(model1VecUp, model1VecDown, 50.0f, 8, GetColor(0, 255, 0), GetColor(255, 255, 255), false);		// 当たり判定を確認用の表示テスト
 		}
+		
 		if (model2Flag)
 		{
-			if (KeyData::Get(KEY_INPUT_W) >= 1)
+			/*if (KeyData::Get(KEY_INPUT_W) >= 1)
 			{
 				model2VecUp.z += 1.0f;
 				model2VecDown.z += 1.0f;
@@ -140,8 +225,41 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				model2VecUp.x += 1.0f;
 				model2VecDown.x += 1.0f;
+			}*/
+			// X軸方向に関して
+			for (int i = 0; i != 10; ++i)
+			{
+				DrawLine(ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x
+					, ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).y
+					, ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x
+					, ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).y
+					, GetColor(255, 0, 255));
 			}
-			model2VecUp = VGet(model2VecDown.x, 160.0f, model2VecDown.z);
+			if ((ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX
+				&& ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX)
+				|| (ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX
+					&& ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX))
+			{
+				printfDx("触れてる\n");
+			}
+
+			// Z軸方向に関して
+			for (int i = 0; i != 10; ++i)
+			{
+				DrawLine(ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x
+					, ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).y
+					, ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).x
+					, ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).y
+					, GetColor(0, 255, 255));
+			}
+			if ((ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX
+				&& ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).x >= mouseX)
+				|| (ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX
+					&& ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).x <= mouseX))
+			{
+				printfDx("触れてる\n");
+			}
+
 			DrawCapsule3D(model2VecUp, model2VecDown, 50.0f, 8, GetColor(0, 255, 0), GetColor(255, 255, 255), false);		// 当たり判定を確認用の表示テスト
 		}
 
@@ -155,15 +273,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (MouseData::GetClick(0) == 1)
 		{
-			model1Flag = false;
-			model2Flag = false;
-
 			if (!model1Flag)
 			{
 				if ((model1Up.x <= mouseX && model1Down.x >= mouseX)
 					|| (model1Up.x >= mouseX && model1Down.x <= mouseX))
 				{
 					model1Flag = true;
+					model2Flag = false;
 				}
 			}
 
@@ -173,9 +289,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					|| (model2Up.x >= mouseX && model2Down.x <= mouseX))
 				{
 					model2Flag = true;
+					model1Flag = false;
 				}
 			}
 		}
+
+		printfDx("\n");
+
+		preMouseX = mouseX;
+		preMouseY = mouseY;
 	}
 
 

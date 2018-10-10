@@ -8,13 +8,13 @@ Camera::Camera()
 
 	circleArea = Vector2(0.0f, 100.0f);
 
-	speed = DX_PI_F / 90;
+	speed = DX_PI_F / 180;
 	angle = 0.0f;
 
 	SetCameraNearFar(10.0f, 10000.0f);	// カメラの描画範囲を指定
 
 	// 第一引数の視点から第二引数のターゲットを見る角度にカメラを設置
-	SetCameraPositionAndTarget_UpVecY(cameraArea, VAdd(cameraArea, VGet(circleArea.x, 0.0f, circleArea.y)));
+	SetCameraPositionAndTarget_UpVecY(cameraArea, VAdd(cameraArea, VGet(circleArea.x, -200.0f, circleArea.y)));
 }
 
 // デストラクタ
@@ -37,44 +37,46 @@ void Camera::Process(int mouseX, int mouseY)
 		// 左に回転中
 		if (premouseX < mouseX)
 		{
-			double xd = circleArea.x * cos(DX_PI_F / 180) - circleArea.y * sin(DX_PI_F / 180);
-			double yd = circleArea.x * sin(DX_PI_F / 180) + circleArea.y * cos(DX_PI_F / 180);
+			float circle = DX_PI_F / 180;
+			double xd = circleArea.x * cosf(circle) - circleArea.y * sinf(circle);
+			double yd = circleArea.x * sinf(circle) + circleArea.y * cosf(circle);
 			circleArea.x = xd;
 			circleArea.y = yd;
-			angle += speed * 2;
+			angle -= circle;
 		}
 		// 右に回転中
 		if (premouseX > mouseX)
 		{
-			double xd = circleArea.x * cos(-DX_PI_F / 180) - circleArea.y * sin(-DX_PI_F / 180);
-			double yd = circleArea.x * sin(-DX_PI_F / 180) + circleArea.y * cos(-DX_PI_F / 180);
+			float circle = -DX_PI_F / 180;
+			double xd = circleArea.x * cosf(circle) - circleArea.y * sinf(circle);
+			double yd = circleArea.x * sinf(circle) + circleArea.y * cosf(circle);
 			circleArea.x = xd;
 			circleArea.y = yd;
-			angle -= speed * 2;
+			angle -= circle;
 		}
 
 		if (KeyData::Get(KEY_INPUT_A) >= 1)
-		{
-			cameraArea.x += cosf(-angle) * 5.0f;
-			cameraArea.z += sinf(-angle) * 5.0f;
-		}
-
-		if (KeyData::Get(KEY_INPUT_D) >= 1)
 		{
 			cameraArea.x += cosf(-angle) * -5.0f;
 			cameraArea.z += sinf(-angle) * -5.0f;
 		}
 
+		if (KeyData::Get(KEY_INPUT_D) >= 1)
+		{
+			cameraArea.x += cosf(-angle) * 5.0f;
+			cameraArea.z += sinf(-angle) * 5.0f;
+		}
+
 		if (KeyData::Get(KEY_INPUT_W) >= 1)
 		{
-			cameraArea.x += sinf(angle) * -5.0f;
-			cameraArea.z += cosf(angle) * -5.0f;
+			cameraArea.x += sinf(angle) * 5.0f;
+			cameraArea.z += cosf(angle) * 5.0f;
 		}
 
 		if (KeyData::Get(KEY_INPUT_S) >= 1)
 		{
-			cameraArea.x += sinf(angle) * 5.0f;
-			cameraArea.z += cosf(angle) * 5.0f;
+			cameraArea.x += sinf(angle) * -5.0f;
+			cameraArea.z += cosf(angle) * -5.0f;
 		}
 	}
 
@@ -95,9 +97,7 @@ void Camera::Process(int mouseX, int mouseY)
 	premouseX = mouseX;
 	premouseY = mouseY;
 
-	DrawFormatString(0, 0, 255, "%f\t%f\t%f\n", cameraArea.x, cameraArea.y, cameraArea.z);
-
-	SetCameraPositionAndTarget_UpVecY(cameraArea, VAdd(cameraArea, VGet(circleArea.x, 0.0f, circleArea.y)));
+	SetCameraPositionAndTarget_UpVecY(cameraArea, VAdd(cameraArea, VGet(circleArea.x, 0.0f, circleArea.y + 50.0f)));
 }
 
 
