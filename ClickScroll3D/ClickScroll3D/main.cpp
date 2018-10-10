@@ -103,26 +103,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (model1Flag)
 		{
-			/*if (KeyData::Get(KEY_INPUT_W) >= 1)
-			{
-				model1VecUp.z += 1.0f;
-				model1VecDown.z += 1.0f;
-			}
-			if (KeyData::Get(KEY_INPUT_S) >= 1)
-			{
-				model1VecUp.z -= 1.0f;
-				model1VecDown.z -= 1.0f;
-			}
-			if (KeyData::Get(KEY_INPUT_D) >= 1)
-			{
-				model1VecUp.x -= 1.0f;
-				model1VecDown.x -= 1.0f;
-			}
-			if (KeyData::Get(KEY_INPUT_A) >= 1)
-			{
-				model1VecUp.x += 1.0f;
-				model1VecDown.x += 1.0f;
-			}*/
 			// XŽ²•ûŒü‚ÉŠÖ‚µ‚Ä
 			for (int i = 0; i != 10; ++i)
 			{
@@ -132,34 +112,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					, ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y+i - (model1VecDown.y-i)) / 2.0f, model1VecUp.z)).y
 					, GetColor(255, 0, 255));
 			}
-			if ((ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX
-				&& ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX)
-				|| (ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX
-					&& ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX))
+			if (!model1ZMoveTouch)
 			{
-				printfDx("G‚ê‚Ä‚é\n");
-				if (MouseData::GetClick(0) >= 1)
+				if ((ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX
+					&& ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX)
+					|| (ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX
+						&& ConvWorldPosToScreenPos(VGet(model1VecUp.x + 100.0f, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX))
 				{
-					model1XMoveTouch = true;
+					if (MouseData::GetClick(0) >= 1)
+					{
+						model1XMoveTouch = true;
+					}
 				}
-			}
-			if (model1XMoveTouch)
-			{
-				if (preMouseX > mouseX)
+				if (model1XMoveTouch)
 				{
-					model1VecUp.x += 1.0f;
-					model1VecDown.x += 1.0f;
+					if (preMouseX > mouseX)
+					{
+						model1VecUp.x -= preMouseX - mouseX;
+						model1VecDown.x -= preMouseX - mouseX;
+					}
+					if (preMouseX < mouseX)
+					{
+						model1VecUp.x += mouseX - preMouseX;
+						model1VecDown.x += mouseX - preMouseX;
+					}
 				}
-				if (preMouseX < mouseX)
+				if (MouseData::GetClick(0) == 0)
 				{
-					model1VecUp.x -= 1.0f;
-					model1VecDown.x -= 1.0f;
+					model1XMoveTouch = false;
 				}
-			}
-
-			if (MouseData::GetClick(0) == 0)
-			{
-				model1XMoveTouch = false;
 			}
 
 			// ZŽ²•ûŒü‚ÉŠÖ‚µ‚Ä
@@ -171,33 +152,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					, ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).y
 					, GetColor(0, 255, 255));	
 			}
-			if ((ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX
-				&& ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).x >= mouseX)
-				|| (ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX
-					&& ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).x <= mouseX))
+			if (!model1XMoveTouch)
 			{
-				printfDx("G‚ê‚Ä‚é\n");
-				if (MouseData::GetClick(0) >= 1)
+				if ((ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x <= mouseX
+					&& ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).x >= mouseX)
+					|| (ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z)).x >= mouseX
+						&& ConvWorldPosToScreenPos(VGet(model1VecUp.x, (model1VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model1VecUp.z + 100.0f)).x <= mouseX))
 				{
-					model1ZMoveTouch = true;
+					if (MouseData::GetClick(0) >= 1)
+					{
+						model1ZMoveTouch = true;
+					}
 				}
-			}
-			if (model1ZMoveTouch)
-			{
-				if (preMouseX > mouseX)
+				if (model1ZMoveTouch)
 				{
-					model1VecUp.z += preMouseX - mouseX;
-					model1VecDown.z += preMouseX - mouseX;
+					if (preMouseX > mouseX)
+					{
+						model1VecUp.z += preMouseX - mouseX;
+						model1VecDown.z += preMouseX - mouseX;
+					}
+					if (preMouseX < mouseX)
+					{
+						model1VecUp.z -= mouseX - preMouseX;
+						model1VecDown.z -= mouseX - preMouseX;
+					}
 				}
-				if (preMouseX < mouseX)
+				if (MouseData::GetClick(0) == 0)
 				{
-					model1VecUp.z -= mouseX - preMouseX;
-					model1VecDown.z -= mouseX - preMouseX;
+					model1ZMoveTouch = false;
 				}
-			}
-			if (MouseData::GetClick(0) == 0)
-			{
-				model1ZMoveTouch = false;
 			}
 			
 
@@ -206,26 +189,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		
 		if (model2Flag)
 		{
-			/*if (KeyData::Get(KEY_INPUT_W) >= 1)
-			{
-				model2VecUp.z += 1.0f;
-				model2VecDown.z += 1.0f;
-			}
-			if (KeyData::Get(KEY_INPUT_S) >= 1)
-			{
-				model2VecUp.z -= 1.0f;
-				model2VecDown.z -= 1.0f;
-			}
-			if (KeyData::Get(KEY_INPUT_D) >= 1)
-			{
-				model2VecUp.x -= 1.0f;
-				model2VecDown.x -= 1.0f;
-			}
-			if (KeyData::Get(KEY_INPUT_A) >= 1)
-			{
-				model2VecUp.x += 1.0f;
-				model2VecDown.x += 1.0f;
-			}*/
 			// XŽ²•ûŒü‚ÉŠÖ‚µ‚Ä
 			for (int i = 0; i != 10; ++i)
 			{
@@ -235,12 +198,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					, ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).y
 					, GetColor(255, 0, 255));
 			}
-			if ((ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX
-				&& ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX)
-				|| (ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX
-					&& ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX))
+			if (!model1ZMoveTouch)
 			{
-				printfDx("G‚ê‚Ä‚é\n");
+				if ((ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX
+					&& ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX)
+					|| (ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX
+						&& ConvWorldPosToScreenPos(VGet(model2VecUp.x + 100.0f, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX))
+				{
+					if (MouseData::GetClick(0) >= 1)
+					{
+						model2XMoveTouch = true;
+					}
+				}
+				if (model2XMoveTouch)
+				{
+					if (preMouseX > mouseX)
+					{
+						model2VecUp.x -= preMouseX - mouseX;
+						model2VecDown.x -= preMouseX - mouseX;
+					}
+					if (preMouseX < mouseX)
+					{
+						model2VecUp.x += mouseX - preMouseX;
+						model2VecDown.x += mouseX - preMouseX;
+					}
+				}
+				if (MouseData::GetClick(0) == 0)
+				{
+					model2XMoveTouch = false;
+				}
 			}
 
 			// ZŽ²•ûŒü‚ÉŠÖ‚µ‚Ä
@@ -252,12 +238,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					, ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).y
 					, GetColor(0, 255, 255));
 			}
-			if ((ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX
-				&& ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).x >= mouseX)
-				|| (ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX
-					&& ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).x <= mouseX))
+			if (!model2XMoveTouch)
 			{
-				printfDx("G‚ê‚Ä‚é\n");
+				if ((ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x <= mouseX
+					&& ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).x >= mouseX)
+					|| (ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z)).x >= mouseX
+						&& ConvWorldPosToScreenPos(VGet(model2VecUp.x, (model2VecUp.y + i - (model1VecDown.y - i)) / 2.0f, model2VecUp.z + 100.0f)).x <= mouseX))
+				{
+					if (MouseData::GetClick(0) >= 1)
+					{
+						model2ZMoveTouch = true;
+					}
+				}
+				if (model2ZMoveTouch)
+				{
+					if (preMouseX > mouseX)
+					{
+						model2VecUp.z += preMouseX - mouseX;
+						model2VecDown.z += preMouseX - mouseX;
+					}
+					if (preMouseX < mouseX)
+					{
+						model2VecUp.z -= mouseX - preMouseX;
+						model2VecDown.z -= mouseX - preMouseX;
+					}
+				}
+				if (MouseData::GetClick(0) == 0)
+				{
+					model2ZMoveTouch = false;
+				}
 			}
 
 			DrawCapsule3D(model2VecUp, model2VecDown, 50.0f, 8, GetColor(0, 255, 0), GetColor(255, 255, 255), false);		// “–‚½‚è”»’è‚ðŠm”F—p‚Ì•\Ž¦ƒeƒXƒg
@@ -293,8 +302,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 			}
 		}
-
-		printfDx("\n");
 
 		preMouseX = mouseX;
 		preMouseY = mouseY;
