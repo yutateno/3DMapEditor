@@ -10,7 +10,7 @@ class Camera
 {
 private:
 	VECTOR cameraArea;		// カメラの位置
-	VECTOR viewArea;		// 注視する方向
+	Vector2 circleArea;
 
 
 	int stageHandle;		// 当たり判定用ステージ

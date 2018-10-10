@@ -49,7 +49,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	VECTOR Pos1;
 	VECTOR Pos2;
 
-	float LINE_AREA_SIZE = 100000.0f;
+	float LINE_AREA_SIZE = 10000.0f;
 	int LINE_NUM = 500;
 
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0 && !MouseData::GetClick(2))
