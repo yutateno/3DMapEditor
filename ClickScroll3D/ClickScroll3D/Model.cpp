@@ -1,7 +1,7 @@
 #include "Model.hpp"
 
 
-Model::Model(VECTOR t_modelVecUp, VECTOR t_modelVecDown)
+Model::Model(VECTOR t_modelVecUp, VECTOR t_modelVecDown, std::string str)
 {
 	modelVecUp	 = t_modelVecUp;
 	modelVecDown = t_modelVecDown;
@@ -14,7 +14,7 @@ Model::Model(VECTOR t_modelVecUp, VECTOR t_modelVecDown)
 	modelXMoveTouch = false;
 	modelZMoveTouch = false;
 
-	modelHandle = MV1LoadModel("“§‰ß–³‘o\\“§‰ß–³‘o\\tkms_Blender.mv1");
+	modelHandle = MV1LoadModel(str.c_str());
 
 	MV1SetPosition(modelHandle, modelVecDown);
 }
@@ -155,4 +155,9 @@ void Model::SetTouchFlase()
 bool Model::GetModelFlag()
 {
 	return modelFlag;
+}
+
+VECTOR Model::GetArea()
+{
+	return modelVecDown;
 }

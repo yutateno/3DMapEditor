@@ -11,7 +11,7 @@ Camera::Camera()
 	speed = DX_PI_F / 180;
 	angle = 0.0f;
 
-	SetCameraNearFar(10.0f, 10000.0f);	// カメラの描画範囲を指定
+	SetCameraNearFar(1.0f, 5000.0f);	// カメラの描画範囲を指定
 
 	// 第一引数の視点から第二引数のターゲットを見る角度にカメラを設置
 	SetCameraPositionAndTarget_UpVecY(cameraArea, VAdd(cameraArea, VGet(circleArea.x, -200.0f, circleArea.y)));
@@ -38,8 +38,8 @@ void Camera::Process(int mouseX, int mouseY)
 		if (premouseX < mouseX)
 		{
 			float circle = DX_PI_F / 180;
-			double xd = circleArea.x * cosf(circle) - circleArea.y * sinf(circle);
-			double yd = circleArea.x * sinf(circle) + circleArea.y * cosf(circle);
+			float xd = circleArea.x * cosf(circle) - circleArea.y * sinf(circle);
+			float yd = circleArea.x * sinf(circle) + circleArea.y * cosf(circle);
 			circleArea.x = xd;
 			circleArea.y = yd;
 			angle -= circle;
@@ -48,8 +48,8 @@ void Camera::Process(int mouseX, int mouseY)
 		if (premouseX > mouseX)
 		{
 			float circle = -DX_PI_F / 180;
-			double xd = circleArea.x * cosf(circle) - circleArea.y * sinf(circle);
-			double yd = circleArea.x * sinf(circle) + circleArea.y * cosf(circle);
+			float xd = circleArea.x * cosf(circle) - circleArea.y * sinf(circle);
+			float yd = circleArea.x * sinf(circle) + circleArea.y * cosf(circle);
 			circleArea.x = xd;
 			circleArea.y = yd;
 			angle -= circle;
