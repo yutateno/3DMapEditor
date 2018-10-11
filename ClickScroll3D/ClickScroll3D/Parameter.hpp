@@ -1,9 +1,12 @@
 #pragma once
+#define _POINTER_RELEASE(p) { if(p!=NULL) { delete p; p=NULL; } }
+#define _MODEL_RELEASE(p) { if(p!=-1) { MV1DeleteModel(p); p=-1; } }
 
 
 class Parameter
 {
-
+public:
+	static const int modelNum = 3;
 };
 
 class Vector2
