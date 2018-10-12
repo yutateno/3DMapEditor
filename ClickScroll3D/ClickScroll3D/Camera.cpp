@@ -14,7 +14,7 @@ Camera::Camera()
 	SetCameraNearFar(1.0f, 5000.0f);	// カメラの描画範囲を指定
 
 	// 第一引数の視点から第二引数のターゲットを見る角度にカメラを設置
-	SetCameraPositionAndTarget_UpVecY(cameraArea, VAdd(cameraArea, VGet(circleArea.x, -200.0f, circleArea.y)));
+	SetCameraPositionAndTarget_UpVecY(cameraArea, VAdd(cameraArea, VGet(circleArea.x, 0.0f, circleArea.y + 50.0f)));
 }
 
 // デストラクタ
@@ -53,6 +53,16 @@ void Camera::Process(int mouseX, int mouseY)
 			circleArea.x = xd;
 			circleArea.y = yd;
 			angle -= circle;
+		}
+		// 上に回転中
+		if (premouseY < mouseY)
+		{
+			cameraArea.y -= 10;
+		}
+		// 下に回転中
+		if (premouseY > mouseY)
+		{
+			cameraArea.y += 10;
 		}
 
 		if (KeyData::Get(KEY_INPUT_A) >= 1)
