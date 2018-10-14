@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	VECTOR model3VecUp = VGet(200.0f, 160.0f, 200.0f);
 	VECTOR model3VecDown = VGet(200.0f, 0.0f, 200.0f);
 
-	std::string str = "“§‰ß–³‘o\\“§‰ß–³‘o\\tkms_Blender.mv1";
+	std::string str = "“§‰ß–³‘o\\“§‰ß–³‘o\\tkms_metaseq.mv1";
 
 	std::vector<Model*> v_model;
 	v_model.push_back(new Model(model1VecUp, model1VecDown, str));
