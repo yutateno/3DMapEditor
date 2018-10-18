@@ -1,4 +1,4 @@
-# ClickScroll3D
+# 3DMapEditor
 
 ClickScrollの3Dバージョンです。
 
