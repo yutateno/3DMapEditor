@@ -1,6 +1,6 @@
 # 3DMapEditor
 
-![Gif](https://raw.github.com/wiki/yutateno/3DMapEditor/clickscroll3d.gif)
+![Gif](https://raw.github.com/wiki/yutateno/3DMapEditor/click3d.gif)
 <br><br>
 
 ClickScrollの3Dバージョンです。
