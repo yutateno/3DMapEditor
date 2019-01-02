@@ -1,5 +1,8 @@
 # 3DMapEditor
 
+![Gif](https://raw.github.com/wiki/yutateno/3DMapEditor/clickscroll3d.gif)
+<br><br>
+
 ClickScrollの3Dバージョンです。
 
 3D上のモデルをマウスだけで弄って座標位置を決めるといったものです。
